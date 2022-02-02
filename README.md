@@ -9,7 +9,8 @@
  - < Create more advanced features once implemention done (probably like kicking users? or setup a password system) >
 
 ## Libraries used
- - Python's socket
+ - import socket
+ - import threading
 
 ## Decisions and tradeoffs 
  - < Add here > 
