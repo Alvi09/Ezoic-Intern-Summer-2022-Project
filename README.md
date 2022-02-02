@@ -1,18 +1,18 @@
 # Ezoic-Intern-Summer-2022-Project
 
-# Assumptions
+## Assumptions
  - Simple local, networking protocol communication through sockets 
 
-# Approach
+## Approach
  - Setup server first so clients to connect by listening
  - Connect clients to server to allow socket communication
  - < Create more advanced features once implemention done (probably like kicking users? or setup a password system) >
 
-# Libraries used
+## Libraries used
  - Python's socket
 
-# Decisions and tradeoffs 
+## Decisions and tradeoffs 
  - < Add here > 
 
-# If it were a bigger project 
+## If it were a bigger project 
  - < Do afterwards >
