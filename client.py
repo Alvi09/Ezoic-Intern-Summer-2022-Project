@@ -2,6 +2,11 @@ import socket
 import threading
 import sys
 
+import random
+import my_colors
+
+from colorama import Fore
+
 def client_receive():
     while True:
         try:
@@ -19,7 +24,7 @@ def client_receive():
 
 def send_msg():
     while True:
-        msg = "{}: ".format(username) + input("")
+        msg = f"{client_color}{username}{Fore.RESET}: {input('')}"
         client.send(msg.encode(FORMAT))
 
 if __name__ == "__main__":
@@ -29,6 +34,8 @@ if __name__ == "__main__":
     client.connect(("127.0.0.1", 8000))
 
     username = input("Enter a username: ")
+
+    client_color = random.choice(my_colors.colors_arr)
 
     thread_receive = threading.Thread(target = client_receive)
     thread_receive.start()

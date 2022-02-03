@@ -12,6 +12,7 @@
  - `import socket` to handle communication between sockerts
  - `import threading` to handle multi-threading to allow clients executing independently
  - `import sys` 
+ - `import colorama` to color username text
 
 ## Decisions and tradeoffs 
  - OOP vs Procedural Programming
