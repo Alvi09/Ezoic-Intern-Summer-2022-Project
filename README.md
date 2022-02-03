@@ -31,12 +31,14 @@
    - Use a framework like React instead of Python's socket implementation
  
  - If I had more time
+   - Implement /kick function
+     - Tried but there's a few bugs so didn't end up pushing
+   - Implement possibly a /ban
+   - Implement unique usernames
+   - Implement a way to store users and their passwords 
+   - Figure out why timestamps were inaccurate using multiple sockets.
+     - Client2 ends up exceeding Client1's timestamp even though Client1 started first
    - Fix current bug issues:
      - Disconnection message isn't shown properly on exit on exception
      - Client1 has to enter their username first before Client2 can do anything
-   - Implement /kick function
-     - Tried but there's a few bugs so didn't end up pushing
-    - Implement possibly a /ban
-    - Implement unique usernames
-    - Figure out why timestamps were inaccurate using multiple sockets.
-     - Client2 ends up exceeding Client1's timestamp even though Client1 started first
+   
