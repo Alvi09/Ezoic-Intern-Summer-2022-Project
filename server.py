@@ -20,8 +20,12 @@ def handle_client(client):
                 sys.exit()
                 
             else:
-                if (actual_msg == "/help") :
+                if (actual_msg == "/help"):
                     client.send(print_help_menu().encode(FORMAT))
+
+                elif (actual_msg == "/users"):
+                    client.send(print_current_users().encode(FORMAT))
+                
                 else:
                     sendTo_allClients(msg)
         except:
@@ -43,17 +47,23 @@ def disconnect(client):
 
 def get_actual_msg(msg):
     actual_msg = ""
-    
     for i in range(len(msg)):
         if msg[i] == ':':
             actual_msg += msg[i+2:]
             break
     return actual_msg
 
-
 def print_help_menu():
-    return '\nList of commands --\n"/quit"\n'
+    return "\nList of commands: " \
+        "\n- /quit" \
+        "\n- /users" \
+        "\n"
 
+def print_current_users():
+    current_users = "\nActive users:\n"
+    for i in range(len(users_arr)):
+        current_users += "-" + users_arr[i] + '\n'
+    return current_users
 
 def server_receive():
     while True:
