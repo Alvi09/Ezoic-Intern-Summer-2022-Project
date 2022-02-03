@@ -4,7 +4,8 @@ import sys
 import random
 from colorama import Fore
 
-from server import get_actual_msg
+import json
+import time
 
 import my_colors
 
@@ -15,7 +16,21 @@ def client_receive():
             if (msg == "USERNAME"):
                 client.send(username.encode(FORMAT))
             else:
-                print(msg)
+                parsed_json = json.loads(msg)
+
+                if (parsed_json['type'] == "server"):
+                    print(f"{parsed_json['username']} {parsed_json['input']}")
+
+                else:
+                    color = parsed_json['color']
+                    actual_username = parsed_json['username']
+                    color_reset = parsed_json['color_reset']
+                    user_input = parsed_json['input']
+                    current_time = parsed_json['time']
+
+                    actual_msg = f"[{current_time}] {color} {actual_username}: {color_reset} {user_input}"
+                    print(actual_msg)
+
         except:
             print("Erorr!")
             client.close()
@@ -23,14 +38,28 @@ def client_receive():
 
 def send_msg():
     while True:
-        msg = f"{client_color}{username}{Fore.RESET}: {input('')}"
-        
+        user_input = input('')
+
+        currentTime = time.strftime("%H:%M:%S")
+
+        payload['input'] = user_input
+        payload['type'] = "client"
+        payload['time'] = str(currentTime)
+
+        payload_json = json.dumps(payload)
+        msg = payload_json
+
+        client.send(msg.encode(FORMAT))
+
+
+
+
         # actual_msg = get_actual_msg(msg)
         # if (username == "ADMIN" and actual_msg[0:5] == "/kick"):            
         #         client.send(f"/kick {actual_msg[6:]}".encode(FORMAT))
         # else:
 
-        client.send(msg.encode(FORMAT))
+        # client.send(msg.encode(FORMAT))
 
 def get_valid_username():
     username = ""
@@ -50,6 +79,15 @@ if __name__ == "__main__":
 
     username = get_valid_username()
     client_color = random.choice(my_colors.colors_arr)
+
+    payload = {'color': client_color,
+               'username': username,
+               'color_reset' : Fore.RESET,
+               'input': "",
+               'type': "",
+               'time': ""
+    }
+
 
     thread_receive = threading.Thread(target = client_receive)
     thread_receive.start()

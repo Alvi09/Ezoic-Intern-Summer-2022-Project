@@ -2,6 +2,8 @@ import socket
 import threading
 import sys
 
+import json
+
 def sendTo_allClients(msg):
     for i in range(len(clients_arr)):
         clients_arr[i].send(msg)
@@ -9,33 +11,45 @@ def sendTo_allClients(msg):
 def handle_client(client):
     while True:
         try:
-            msg = client.recv(2048)
-            
-            decoded_msg = msg.decode(FORMAT)
-            actual_msg = get_actual_msg(decoded_msg)
+            msg = client.recv(2048).decode(FORMAT)
 
-            if (actual_msg == "/quit"):
-                disconnect(client)
-                sys.exit()
+            parsed_json = json.loads(msg)         
+
+            # color = parsed_json['color']
+            # username = parsed_json['username']
+            # color_reset = parsed_json['color_reset']
+            # msg = parsed_json['input']
+
+            # actual_msg = color + username + color_reset + msg
+            sendTo_allClients(json.dumps(parsed_json).encode(FORMAT))
+
+            # actual_msg = get_actual_msg(decoded_msg)
+
+
+
+            # if (actual_msg == "/quit"):
+            #     disconnect(client)
+            #     sys.exit()
                 
-            else:
-                if (actual_msg == "/help"):
-                    client.send(print_help_menu().encode(FORMAT))
+            # else:
+            #     if (actual_msg == "/help"):
+            #         client.send(print_help_menu().encode(FORMAT))
 
-                elif (actual_msg == "/users"):
-                    client.send(print_current_users().encode(FORMAT))
+            #     elif (actual_msg == "/users"):
+            #         client.send(print_current_users().encode(FORMAT))
 
-                elif (actual_msg == "/num_users"):
-                    client.send(print_num_users().encode(FORMAT))
+            #     elif (actual_msg == "/num_users"):
+            #         client.send(print_num_users().encode(FORMAT))
 
                 # elif (actual_msg[0:5] == "/kick"):
                 #     kicked_username = actual_msg[6:]
                 #     print('here:', kicked_username)
                 #     kick_user(kicked_username)
 
-                else:
-                    sendTo_allClients(msg)
-        except:
+        #         else:
+        #             sendTo_allClients(msg)
+        except Exception as e:
+            print(e)
             disconnect(client)
             sys.exit()
 
@@ -102,8 +116,15 @@ def server_receive():
 
         print(f"{username} has connected\n") 
 
-        msg = f"{username} has entered the chat!".encode(FORMAT)
-        sendTo_allClients(msg)
+        payload = {
+                'username': username,
+                'input': "",
+                'type': "server"
+        }
+        payload['input'] = "has entered the chat!"
+
+        # msg = f"{username} has entered the chat!".encode(FORMAT)
+        sendTo_allClients(json.dumps(payload).encode(FORMAT))
 
         thread = threading.Thread(target = handle_client, args = (client,))
         thread.start()
