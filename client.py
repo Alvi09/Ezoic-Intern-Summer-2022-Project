@@ -1,14 +1,21 @@
 import socket
 import threading
+import sys
 
 def client_receive():
     while True:
-        msg = client.recv(2048).decode(FORMAT)
-        
-        if (msg == "USERNAME"):
-            client.send(username.encode(FORMAT))
-        else:
-            print(msg)
+        try:
+            msg = client.recv(2048).decode(FORMAT)
+            
+            if (msg == "USERNAME"):
+                client.send(username.encode(FORMAT))
+            else:
+                print(msg)
+
+        except:
+            print("Erorr!")
+            client.close()
+            sys.exit()
 
 def send_msg():
     while True:

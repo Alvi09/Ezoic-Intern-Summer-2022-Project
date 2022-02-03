@@ -1,5 +1,6 @@
 import socket
 import threading
+import sys
 
 def sendTo_allClients(msg):
     for i in range(len(clients_arr)):
@@ -10,20 +11,49 @@ def handle_client(client):
         try:
             # Might need to account for max length of a msg (if it's too big)
             msg = client.recv(2048)
-            sendTo_allClients(msg)
+            
+            decoded_msg = msg.decode(FORMAT)
+            actual_msg = get_actual_msg(decoded_msg)
 
+            if (actual_msg == "/quit"):
+                disconnect(client)
+                sys.exit()
+                
+            else:
+                if (actual_msg == "/help") :
+                    client.send(print_help_menu().encode(FORMAT))
+                else:
+                    sendTo_allClients(msg)
         except:
-            for i in range(len(clients_arr)):
-                if (clients_arr[i] == client):
-                    username = users_arr[i]
+            disconnect(client)
+            sys.exit()
 
-                    clients_arr.remove(client)
-                    client.close()
+def disconnect(client):
+    for i in range(len(clients_arr)):
+        if (clients_arr[i] == client):
+            username = users_arr[i]
 
-                    sendTo_allClients(f"{username} has disconnected!".encode(FORMAT))
-                    users_arr.remove(username)
-                    
-                    break
+            clients_arr.remove(client)
+            client.close()
+
+            sendTo_allClients(f"{username} has disconnected!".encode(FORMAT))
+            print(f"{username} has left")
+            users_arr.remove(username)            
+            break
+
+def get_actual_msg(msg):
+    actual_msg = ""
+    
+    for i in range(len(msg)):
+        if msg[i] == ':':
+            actual_msg += msg[i+2:]
+            break
+    return actual_msg
+
+
+def print_help_menu():
+    return '\nList of commands --\n"/quit"\n'
+
 
 def server_receive():
     while True:
@@ -36,7 +66,7 @@ def server_receive():
         clients_arr.append(client)
         users_arr.append(username)
 
-        print(f"{username} has been properly connected") 
+        print(f"{username} has connected\n") 
 
         msg = f"{username} has entered the chat!".encode(FORMAT)
         sendTo_allClients(msg)

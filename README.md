@@ -9,11 +9,13 @@
  - < Create more advanced features once implemention done (probably like kicking users? or setup a password system) >
 
 ## Libraries used
- - import socket
- - import threading
+ - imported socket to handle communication between sockerts
+ - imported threading to handle multi-threading to allow clients executing independently
+ - imported sys
 
 ## Decisions and tradeoffs 
- - < Add here > 
+ - OOP vs Procedural Programming
+   - For this project, I took on a more procedural path since the server and client code didn't need to be reused or shared for other programs
 
 ## If it were a bigger project 
  - < Do afterwards >
