@@ -9,7 +9,6 @@ def sendTo_allClients(msg):
 def handle_client(client):
     while True:
         try:
-            # Might need to account for max length of a msg (if it's too big)
             msg = client.recv(2048)
             
             decoded_msg = msg.decode(FORMAT)
@@ -25,12 +24,29 @@ def handle_client(client):
 
                 elif (actual_msg == "/users"):
                     client.send(print_current_users().encode(FORMAT))
-                
+
+                # elif (actual_msg[0:5] == "/kick"):
+                #     kicked_username = actual_msg[6:]
+                #     print('here:', kicked_username)
+                #     kick_user(kicked_username)
+
                 else:
                     sendTo_allClients(msg)
         except:
             disconnect(client)
             sys.exit()
+
+# def kick_user(username):
+#     for i in range(len(clients_arr)):
+#         if (users_arr[i] == username):
+#             clients_arr[i].send("You have been kicked by an admin!".encode(FORMAT))
+
+#             clients_arr.remove(clients_arr[i])
+#             clients_arr[i].close()
+            
+#             sendTo_allClients(f"{username} has been kicked by an admin!".encode(FORMAT))
+#             users_arr.remove(username)
+#             break
 
 def disconnect(client):
     for i in range(len(clients_arr)):
