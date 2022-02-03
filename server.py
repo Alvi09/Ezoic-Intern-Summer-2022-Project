@@ -97,7 +97,7 @@ if __name__ == "__main__":
     server.bind((HOST, PORT))
     server.listen()
 
-    print("Server is listening on . . .")
+    print("Server is listening. . .")
     server_receive()
 
 

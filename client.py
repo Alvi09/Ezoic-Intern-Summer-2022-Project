@@ -1,11 +1,10 @@
 import socket
 import threading
 import sys
-
 import random
-import my_colors
-
 from colorama import Fore
+
+import my_colors
 
 def client_receive():
     while True:
@@ -27,13 +26,23 @@ def send_msg():
         msg = f"{client_color}{username}{Fore.RESET}: {input('')}"
         client.send(msg.encode(FORMAT))
 
+def get_valid_username():
+    while True:
+        username = input("Enter a username: ")
+        if (len(username) == 0):
+            print("Usernames can't be empty! Try again\n")
+        else:
+            break
+    
+    return username
+
 if __name__ == "__main__":
     FORMAT = "utf-8"
 
     client = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
     client.connect(("127.0.0.1", 8000))
 
-    username = input("Enter a username: ")
+    username = get_valid_username()
 
     client_color = random.choice(my_colors.colors_arr)
 
@@ -42,4 +51,4 @@ if __name__ == "__main__":
 
     thread_send = threading.Thread(target = send_msg)
     thread_send.start()
-    
+
