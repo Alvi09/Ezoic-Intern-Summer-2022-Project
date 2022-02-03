@@ -35,7 +35,7 @@
      - Tried but there's a few bugs so didn't end up pushing
    - Implement possibly a /ban
    - Implement unique usernames
-   - Implement a way to store users and their passwords 
+   - Implement a login system to store users and their passwords 
    - Figure out why timestamps were inaccurate using multiple sockets.
      - Client2 ends up exceeding Client1's timestamp even though Client1 started first
    - Fix current bug issues:

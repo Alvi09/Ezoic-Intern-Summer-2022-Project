@@ -25,6 +25,9 @@ def handle_client(client):
                 elif (actual_msg == "/users"):
                     client.send(print_current_users().encode(FORMAT))
 
+                elif (actual_msg == "/num_users"):
+                    client.send(print_num_users().encode(FORMAT))
+
                 # elif (actual_msg[0:5] == "/kick"):
                 #     kicked_username = actual_msg[6:]
                 #     print('here:', kicked_username)
@@ -73,6 +76,7 @@ def print_help_menu():
     return "\nList of commands: " \
         "\n- /quit" \
         "\n- /users" \
+        "\n- /num_users" \
         "\n"
 
 def print_current_users():
@@ -81,6 +85,10 @@ def print_current_users():
         current_users += "-" + users_arr[i] + '\n'
     return current_users
 
+def print_num_users():
+    num_users = "\nNumber of active users:\n" + str(len(users_arr))
+    return num_users
+    
 def server_receive():
     while True:
         client, addr = server.accept()
